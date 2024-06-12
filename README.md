@@ -61,7 +61,6 @@ Weather App est une application de prévision météorologique construite avec N
     ```sh
    npm run lint
 
-
 ## Utilisation
 
 1. Ouvrez l'application dans votre navigateur à http://localhost:3000.

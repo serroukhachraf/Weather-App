@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next-on-netlify",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@netlify/plugin-nextjs": "^5.3.2",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "leaflet": "^1.9.4",

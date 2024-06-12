@@ -8,13 +8,23 @@ import "../app/styles/main.css";
 const predefinedCities = ["Paris", "New York", "Tokyo", "London", "Berlin"];
 
 export default function Home() {
-  const [cities, setCities] = useState(predefinedCities);
+  const [cities, setCities] = useState([]);
   const [weatherData, setWeatherData] = useState({});
+
+  useEffect(() => {
+    const storedCities = JSON.parse(localStorage.getItem("cities"));
+    if (storedCities && storedCities.length > 0) {
+      setCities(storedCities);
+    } else {
+      setCities(predefinedCities);
+    }
+  }, []);
 
   useEffect(() => {
     cities.forEach((city) => {
       fetchWeatherData(city);
     });
+    localStorage.setItem("cities", JSON.stringify(cities));
   }, [cities]);
 
   const fetchWeatherData = async (city) => {
@@ -29,7 +39,9 @@ export default function Home() {
   };
 
   const addCity = (city) => {
-    setCities([...cities, city]);
+    if (!cities.includes(city)) {
+      setCities([...cities, city]);
+    }
   };
 
   return (

@@ -3,8 +3,9 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import { Container, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
+import "leaflet/dist/leaflet.css";
 
-// Utilisation de dynamic import pour charger Leaflet uniquement côté client
+// Importer Leaflet uniquement côté client
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
   { ssr: false }
@@ -23,19 +24,20 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
 
 const CityDetail = () => {
   const router = useRouter();
-  const { city } = router.query;
+  const { cityId } = router.query; // Utilisez cityId au lieu de city
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (city) {
-      console.log(`Fetching weather data for city: ${city}`);
-      fetchWeatherData(city);
+    console.log("Router query:", router.query);
+    if (cityId) {
+      console.log(`Fetching weather data for city: ${cityId}`);
+      fetchWeatherData(cityId);
     } else {
       console.log("City is undefined or null");
     }
-  }, [city]);
+  }, [cityId, router.query]);
 
   const fetchWeatherData = async (city) => {
     try {
@@ -48,7 +50,7 @@ const CityDetail = () => {
       console.log("Weather data fetched:", response.data);
       setWeatherData(response.data);
       setLoading(false);
-      setError(null); // Clear any previous error
+      setError(null);
     } catch (error) {
       console.error("Error fetching weather data:", error);
       setError(

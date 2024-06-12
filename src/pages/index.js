@@ -1,111 +1,68 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import CityCard from "../app/components/CityCard";
+import SearchBar from "../app/components/SearchBar";
+import { Container, Row, Col, Navbar, Alert } from "react-bootstrap";
+import "../app/styles/main.css";
 
-// Fix marker icons issue with React-Leaflet
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
-});
+const predefinedCities = ["Paris", "New York", "Tokyo", "London", "Berlin"];
 
-const CityDetail = () => {
-  const router = useRouter();
-  const { city } = router.query;
-  const [weatherData, setWeatherData] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function Home() {
+  const [cities, setCities] = useState(predefinedCities);
+  const [weatherData, setWeatherData] = useState({});
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (city) {
-      console.log(`Fetching weather data for city: ${city}`);
+    cities.forEach((city) => {
       fetchWeatherData(city);
-    } else {
-      console.log("City is undefined or null");
-    }
-  }, [city]);
+    });
+  }, [cities]);
 
   const fetchWeatherData = async (city) => {
     try {
-      setLoading(true);
       const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
-      console.log(`Using API key: ${apiKey}`);
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
       );
-      console.log("Weather data fetched:", response.data);
-      setWeatherData(response.data);
-      setLoading(false);
-      setError(null); // Clear any previous error
+      setWeatherData((prevData) => ({
+        ...prevData,
+        [city]: response.data,
+      }));
+      setError(null);
     } catch (error) {
-      console.error("Error fetching weather data:", error);
       setError(
-        "An error occurred while fetching the weather data. Please check your network connection."
+        `An error occurred while fetching the weather data for ${city}. Please check your network connection.`
       );
-      setLoading(false);
     }
   };
 
-  if (loading) {
-    return (
-      <Container className="text-center my-5">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container className="text-center my-5">
-        <Alert variant="danger">{error}</Alert>
-      </Container>
-    );
-  }
-
-  if (!weatherData) {
-    return <p className="text-center my-5">Loading...</p>;
-  }
-
-  const { coord, name, weather, main } = weatherData;
+  const addCity = (city) => {
+    setCities([...cities, city]);
+  };
 
   return (
-    <Container>
-      <Row className="my-5">
-        <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>{name}</Card.Title>
-              <Card.Text>
-                Temperature: {main.temp}°C <br />
-                Condition: {weather[0].description}
-              </Card.Text>
-              <MapContainer
-                center={[coord.lat, coord.lon]}
-                zoom={13}
-                style={{ height: "400px", width: "100%" }}
-              >
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                />
-                <Marker position={[coord.lat, coord.lon]}>
-                  <Popup>{name}</Popup>
-                </Marker>
-              </MapContainer>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <div>
+      <Navbar bg="light" expand="lg" sticky="top" className="px-3">
+        <Container fluid>
+          <Navbar.Brand className="fw-bold fs-3" href="#">
+            Weather-App
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Collapse id="navbarScroll">
+            <SearchBar addCity={addCity} setError={setError} />
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <Container>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <Row className="my-5">
+          {cities.map((city) => (
+            <Col key={city} xs={12} sm={6} md={4} className="mb-4">
+              <CityCard city={city} weather={weatherData[city]} />
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </div>
   );
-};
-
-export default CityDetail;
+}

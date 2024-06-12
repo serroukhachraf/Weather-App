@@ -1,0 +1,30 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.city-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.city-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px;
+  width: 200px;
+  text-align: center;
+}
+
+.search-bar {
+  margin-bottom: 16px;
+}
+
+.search-bar input {
+  padding: 8px;
+  margin-right: 8px;
+}
+
+.search-bar button {
+  padding: 8px;
+}

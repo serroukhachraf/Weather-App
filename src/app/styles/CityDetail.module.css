@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  gap: 32px;
+  padding: 32px;
+}
+
+.leftPane {
+  width: 300px;
+  padding: 16px;
+  border-right: 1px solid #ccc;
+}
+
+.rightPane {
+  flex: 1;
+  padding: 16px;
+}
+
+.weatherIcon {
+  text-align: center;
+}
+
+.weatherIconImage {
+  width: 100px; /* Ajustez la largeur selon vos besoins */
+  height: 100px; /* Ajustez la hauteur selon vos besoins */
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.temp {
+  font-size: 48px;
+  text-align: center;
+}
+
+.condition {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.date,
+.cityName {
+  text-align: center;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.detailCard {
+  background-color: #add8e6;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+}

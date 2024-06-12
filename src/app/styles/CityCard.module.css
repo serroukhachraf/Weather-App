@@ -1,0 +1,16 @@
+.cityCard {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f8f8f8;
+}
+
+.weatherIcon {
+  width: 80px; /* Ajustez la largeur selon vos besoins */
+  height: 80px; /* Ajustez la hauteur selon vos besoins */
+  display: block;
+  margin: 0 auto 10px;
+}

@@ -1,0 +1,46 @@
+.InputGroup {
+  display: flex;
+  flex-direction: row;
+}
+
+.autosuggestContainer {
+  position: relative;
+  width: 100%;
+}
+
+.autosuggestContainerOpen {
+  border: 1px solid #ccc;
+}
+
+.suggestionsContainer {
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  border: 1px solid #ccc;
+  background-color: white;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.suggestionsList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.suggestionItem {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestionItemHighlighted {
+  background-color: #ddd;
+}
+
+.suggestion {
+  display: flex;
+  justify-content: space-between;
+}

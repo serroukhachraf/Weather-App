@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import axios from "axios";
-import { Container, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Spinner,
+  Alert,
+  ListGroup,
+} from "react-bootstrap";
 import "leaflet/dist/leaflet.css";
 
 // Importer Leaflet uniquement côté client
@@ -82,19 +90,44 @@ const CityDetail = () => {
     return <p className="text-center my-5">Loading...</p>;
   }
 
-  const { coord, name, weather, main } = weatherData;
+  const { coord, name, weather, main, wind, sys } = weatherData;
 
   return (
-    <Container>
-      <Row className="my-5">
-        <Col>
-          <Card>
+    <Container
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: "100vh" }}
+    >
+      <Row className="w-100">
+        <Col md={6} className="mb-4">
+          <Card className="h-100">
             <Card.Body>
               <Card.Title>{name}</Card.Title>
-              <Card.Text>
-                Temperature: {main.temp}°C <br />
-                Condition: {weather[0].description}
-              </Card.Text>
+              <Card.Subtitle className="mb-2 text-muted">
+                {sys.country}
+              </Card.Subtitle>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  <strong>Temperature:</strong> {main.temp}°C
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Condition:</strong> {weather[0].description}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Humidity:</strong> {main.humidity}%
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Wind Speed:</strong> {wind.speed} m/s
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Pressure:</strong> {main.pressure} hPa
+                </ListGroup.Item>
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={6} className="mb-4">
+          <Card className="h-100">
+            <Card.Body>
               <MapContainer
                 center={[coord.lat, coord.lon]}
                 zoom={13}

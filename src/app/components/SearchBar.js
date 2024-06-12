@@ -78,8 +78,8 @@ const SearchBar = ({ addCity }) => {
   return (
     <div>
       {error && <Alert variant="danger">{error}</Alert>}
-      <Form className="d-flex" onSubmit={(e) => e.preventDefault()}>
-        <InputGroup>
+      <Form className="d-flex ms-auto" onSubmit={(e) => e.preventDefault()}>
+        <InputGroup className="d-flex ms-auto">
           <Autosuggest
             suggestions={suggestions}
             onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -91,7 +91,7 @@ const SearchBar = ({ addCity }) => {
             theme={{
               container: styles.autosuggestContainer,
               containerOpen: styles.autosuggestContainerOpen,
-              input: "form-control", // Appliquez la classe Bootstrap
+              input: "form-control",
               suggestionsContainer: styles.suggestionsContainer,
               suggestionsList: styles.suggestionsList,
               suggestion: styles.suggestionItem,
